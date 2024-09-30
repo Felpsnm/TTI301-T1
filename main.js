@@ -18,3 +18,26 @@ async function getCoordinates() {
     }
 }
 
+async function getWeather() {
+    try {
+        let coord = await getCoordinates()
+
+        let lat = coord["lat"]
+        let lon = coord["lon"]
+
+        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`);
+  
+        const data = await res.json();
+    
+        let response = {feels_like: data["main"]["feels_like"], description: data["weather"][0]["description"]}
+        
+        return response 
+
+    } catch (err) {
+        console.log(err.message); //can be console.error
+    }
+}
+
+let weather = await getWeather()
+
+console.log(weather)
